@@ -18,3 +18,14 @@ def getFileFrequencies(filename,order):
         current_buffer = current_buffer [1:]+character
     
     return table,alphabet
+
+def calculateProbabilityMap(frequencies,alphabet,smoothing):
+    result = {}
+    smoothing_denominator = smoothing*len(alphabet)
+
+    for sequence in frequencies.keys():
+        total = sum(sequence.values())
+        denominator = total+smoothing_denominator
+        result[sequence] = { x: (sequence[x]+smoothing)/denominator for x in sequence.keys() }
+        result[sequence]['default']=smoothing/denominator
+    return result

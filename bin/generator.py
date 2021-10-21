@@ -11,4 +11,5 @@ if __name__ == "__main__":
     parser.add_argument("--start", help="Starting text", default="")#use a random method to calculate if empty
 
     args = parser.parse_args()
+    
     table,alphabet = common_modules.getFileFrequencies(args.source,args.order)
