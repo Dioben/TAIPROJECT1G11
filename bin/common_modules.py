@@ -3,7 +3,7 @@
 def getFileFrequencies(filename,order):
     text = open(filename,"r").read()
     alphabet = set(text)
-                #if (len(alphabet)**(order*2))*64>8...   #assumes int size is 64, actually grows forever -> actually just always using hash table
+                #if (len(alphabet)**(order+1))*64>8...   #assumes int size is 64, actually grows forever -> actually just always using hash table
     current_buffer = text[:order]
     text = text[order:]
     table = {}
