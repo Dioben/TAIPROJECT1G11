@@ -7,7 +7,7 @@ def getFileFrequencies(filename,order):
     current_buffer = text[:order]
     text = text[order:]
     table = {}
-
+    appearances = {current_buffer:1}
     for character in text:
         if current_buffer not in table.keys(): #have we seen this predecessor yet?
             table[current_buffer]= {}
@@ -16,8 +16,12 @@ def getFileFrequencies(filename,order):
         else:
             table[current_buffer][character]+=1
         current_buffer = current_buffer [1:]+character
+        if current_buffer in appearances.keys():
+            appearances[current_buffer]+=1
+        else:
+            appearances[current_buffer]=1
     
-    return table,alphabet
+    return table,appearances,alphabet
 
 def calculateProbabilityMap(frequencies,alphabet,smoothing):
     result = {}
