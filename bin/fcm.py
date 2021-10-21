@@ -6,3 +6,5 @@ if __name__ == "__main__":
     parser.add_argument("--source","Source text file", default="example.txt")
     #parser.add_argument("--output","Output file name",default="output.csv")
     parser.add_argument("--smoothing", "smoothing parameter", type=int,default=2) #maybe replace this with a function of alphabet size
+
+    args = parser.parse_args()

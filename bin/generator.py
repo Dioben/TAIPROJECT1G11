@@ -8,3 +8,5 @@ if __name__ == "__main__":
     parser.add_argument("--smoothing", "smoothing parameter", type=int,default=2) #maybe replace this with a function of alphabet size
     parser.add_argument("--length", "length of generated text", type=int, default=1000)
     parser.add_argument("--start", "Starting text", default="")#use a random method to calculate if empty
+
+    args = parser.parse_args()
