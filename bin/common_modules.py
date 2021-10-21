@@ -1,7 +1,10 @@
-#TODO: CRAM OVERLAP HERE
+import math
 
 def getFileFrequencies(filename,order):
-    text = open(filename,"r").read()
+    file = open(filename,"r")
+    text= file.read()
+    file.close()
+
     alphabet = set(text)
                 #if (len(alphabet)**(order+1))*64>8...   #assumes int size is 64, actually grows forever -> actually just always using hash table
     current_buffer = text[:order]
@@ -20,7 +23,6 @@ def getFileFrequencies(filename,order):
             appearances[current_buffer]+=1
         else:
             appearances[current_buffer]=1
-    
     return table,appearances,alphabet
 
 def calculateProbabilityMap(frequencies,alphabet,smoothing):
@@ -33,3 +35,12 @@ def calculateProbabilityMap(frequencies,alphabet,smoothing):
         result[sequence] = { x: (sequence[x]+smoothing)/denominator for x in sequence.keys() }
         result[sequence]['default']=smoothing/denominator
     return result
+
+
+def calculateEntropy(probabilities,appearances):
+    statetotal = sum(appearances.values())
+    #individual formula: − log P(e|c)
+    #row formula: sum of (individual * probability)
+    #overall formula: sum (rowvalue * row probability)
+    rowvalues = {x: sum([-probabilities[y]*math.log2(probabilities[y]) for y in probabilities[x]]) for x in probabilities.keys()}
+    return sum([rowvalues*appearances[state]/statetotal for state in appearances])
