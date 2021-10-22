@@ -1,4 +1,5 @@
 import math
+import random
 
 def getFileFrequencies(filename,order):
     file = open(filename,"r")
@@ -51,13 +52,20 @@ def generateText(probabilities,alphabet,length,start):
     order = len(probabilities.keys()[0])
     if len(start)<order:
         raise ValueError("Given start is too small to work with")
+    
+    alphabet = list(alphabet) #allow consistent ordering
+    alphabet_size = len(alphabet)
     current_buffer = start[-order:]
     generated_string = ""
     for x in range(length):
-        char = yourgenerationmethodhere(probabilities,alphabet,current_buffer)
+        if current_buffer not in probabilities.keys():
+            char = alphabet[math.floor(random.random()*alphabet_size)]
+        else:
+            char = yourgenerationmethodhere(probabilities,alphabet,current_buffer)
         generated_string+=char
         current_buffer= current_buffer[1:]+char
     return generated_string
 
 def yourgenerationmethodhere(probabilities,alphabet,current_buffer):
     #TODO WRITE THIS, POSSIBLY MOVE ALL CODE TO GENERATETEXT IF NOT VERY LARGE
+    
