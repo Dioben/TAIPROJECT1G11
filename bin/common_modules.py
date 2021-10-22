@@ -43,7 +43,7 @@ def calculateEntropy(probabilities,appearances):
     #individual formula: − log P(e|c)
     #row formula: sum of (individual * probability)
     #overall formula: sum (rowvalue * row probability)
-    rowvalues = {x: sum([-probabilities[y]*math.log2(probabilities[y]) for y in probabilities[x]]) for x in probabilities.keys()}
+    rowvalues = {x: sum([-probabilities[y]*math.log2(probabilities[y]) for y in probabilities[x] if y!="default"]) for x in probabilities.keys() }
     return sum([rowvalues*appearances[state]/statetotal for state in appearances])
 
 
