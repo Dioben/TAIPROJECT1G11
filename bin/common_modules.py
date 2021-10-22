@@ -53,19 +53,35 @@ def generateText(probabilities,alphabet,length,start):
     if len(start)<order:
         raise ValueError("Given start is too small to work with")
     
-    alphabet = list(alphabet) #allow consistent ordering
+    alphabet_indexable = list(alphabet) #allow consistent ordering for use in unseen sequences
     alphabet_size = len(alphabet)
     current_buffer = start[-order:]
     generated_string = ""
     for x in range(length):
-        if current_buffer not in probabilities.keys():
-            char = alphabet[math.floor(random.random()*alphabet_size)]
+        if current_buffer not in probabilities.keys():#if we haven't observed this any character is equally likely as a follow-up
+            char = alphabet_indexable[math.floor(random.random()*alphabet_size)]
         else:
-            char = yourgenerationmethodhere(probabilities,alphabet,current_buffer)
+            seen = probabilities[current_buffer].keys()
+            value = random.random()
+            cumulative_chance = 0
+
+            for key in seen: #first try with probabilities we already know
+                if key!="default":
+                    cumulative_chance+=probabilities[current_buffer][key]
+                    if cumulative_chance>=value:
+                        char = key
+                        break
+            if cumulative_chance<value: #try to get an unseen letter here
+                unseen = alphabet.difference(seen)
+                default_add = probabilities[current_buffer]['default']
+                for char in unseen:
+                    cumulative_chance+=default_add
+                    if cumulative_chance>=value:
+                        char = key
+                        break
+            if cumulative_chance>1:
+                raise ValueError("oh god why is cumulative probability larger than 1?")
         generated_string+=char
         current_buffer= current_buffer[1:]+char
     return generated_string
 
-def yourgenerationmethodhere(probabilities,alphabet,current_buffer):
-    #TODO WRITE THIS, POSSIBLY MOVE ALL CODE TO GENERATETEXT IF NOT VERY LARGE
-    
