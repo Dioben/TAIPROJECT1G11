@@ -1,4 +1,5 @@
 import argparse
+import random
 import common_modules
 
 if __name__ == "__main__":
@@ -15,12 +16,18 @@ if __name__ == "__main__":
     table,appearances,alphabet = common_modules.getFileFrequencies(args.source,args.order)
     p_map = common_modules.calculateProbabilityMap(table,alphabet,args.order)
     
-
+    start_text = args.start
     if args.start =="":
-        pass
-        #TODO: CALCULATE START VALUE IF ==""
-
-    text = args.start + common_modules.generateText(table,alphabet,args.length,args.start)
+        total_appearances = sum(appearances.values())
+        cumulative_value = 0
+        target = random.random()
+        for key,value in appearances.entries()
+            cumulative_value+=value/total_appearances
+            if cumulative_value>=target:
+                start_text=key
+                break
+    
+    text = args.start + common_modules.generateText(table,alphabet,args.length,start_text)
     output = open(args.output,"w")
     output.write(text)
     output.close()
