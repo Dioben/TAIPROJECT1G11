@@ -13,3 +13,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     table,appearances,alphabet = common_modules.getFileFrequencies(args.source,args.order)
+    p_map = common_modules.calculateProbabilityMap(table,alphabet,args.order)
+    
+
+    if args.start =="":
+        pass
+        #TODO: CALCULATE START VALUE IF ==""
+
+    text = args.start + common_modules.generateText(table,alphabet,args.length,args.start)
+    output = open(args.output,"w")
+    output.write(text)
+    output.close()
