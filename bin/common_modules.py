@@ -44,3 +44,20 @@ def calculateEntropy(probabilities,appearances):
     #overall formula: sum (rowvalue * row probability)
     rowvalues = {x: sum([-probabilities[y]*math.log2(probabilities[y]) for y in probabilities[x]]) for x in probabilities.keys()}
     return sum([rowvalues*appearances[state]/statetotal for state in appearances])
+
+
+def generateText(probabilities,alphabet,length,start):
+    #return length*chars 
+    order = len(probabilities.keys()[0])
+    if len(start)<order:
+        raise ValueError("Given start is too small to work with")
+    current_buffer = start[-order:]
+    generated_string = ""
+    for x in range(length):
+        char = yourgenerationmethodhere(probabilities,alphabet,current_buffer)
+        generated_string+=char
+        current_buffer= current_buffer[1:]+char
+    return generated_string
+
+def yourgenerationmethodhere(probabilities,alphabet,current_buffer):
+    #TODO WRITE THIS, POSSIBLY MOVE ALL CODE TO GENERATETEXT IF NOT VERY LARGE
