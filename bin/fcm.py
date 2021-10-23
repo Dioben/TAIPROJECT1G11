@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     table,appearances,alphabet = common_modules.getFileFrequencies(args.source,args.order)
 
-    p_map = common_modules.calculateProbabilityMap(table,alphabet,args.order)
+    p_map = common_modules.calculateProbabilityMap(table,alphabet,args.smoothing)
 
-    entropy = common_modules.calculateEntropy(p_map,appearances)
+    entropy = common_modules.calculateEntropy(p_map,appearances,len(alphabet))
     print(entropy)

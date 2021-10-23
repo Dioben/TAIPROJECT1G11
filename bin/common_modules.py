@@ -31,6 +31,8 @@ def getFileFrequencies(filename,order):
     return table,appearances,alphabet
 
 def calculateProbabilityMap(frequencies,alphabet,smoothing):
+    if not smoothing>0:
+        raise ValueError("Smoothing has to be bigger than 0")
     result = {}
     smoothing_denominator = smoothing*len(alphabet)
 
@@ -42,12 +44,19 @@ def calculateProbabilityMap(frequencies,alphabet,smoothing):
     return result
 
 
-def calculateEntropy(probabilities,appearances):
+def calculateEntropy(probabilities,appearances,alphabet_len):
+    """
+    Element entropy:
+        - log( probability_of_element_in_row )
+
+    Row entropy:
+        sum( probability_of_element_in_row * element_entropy )
+    
+    Full entropy:
+        sum( probability_of_row_key_in_text * row_entropy )
+    """
     statetotal = sum(appearances.values())
-    #individual formula: − log P(e|c)
-    #row formula: sum of (individual * probability)
-    #overall formula: sum (rowvalue * row probability)
-    rowvalues = {x: sum([-y[z]*math.log2(y[z]) for z in y.keys() if z!="default"]) for x,y in probabilities.items() }
+    rowvalues = {x: sum([-y[z]*math.log2(y[z]) if z!="default" else (alphabet_len-len(y)+1) * (-y[z]*math.log2(y[z])) if y[z]>0 else 0 for z in y.keys()]) for x,y in probabilities.items()}
     return sum([rowvalues[state]*appearances[state]/statetotal for state in appearances])
 
 

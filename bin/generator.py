@@ -13,7 +13,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     table,appearances,alphabet = common_modules.getFileFrequencies(args.source,args.order)
-    p_map = common_modules.calculateProbabilityMap(table,alphabet,args.order)
+    p_map = common_modules.calculateProbabilityMap(table,alphabet,args.smoothing)
     
 
     if args.start =="":
