@@ -25,8 +25,8 @@ if __name__ == "__main__":
             if cumulative_value>=target:
                 args.start=key
                 break
-    
-    text = args.start + common_modules.generateText(table,alphabet,args.length,start_text)
+
+    text = args.start + common_modules.generateText(p_map,alphabet,args.length,args.start)
     output = open(args.output,"w")
     output.write(text)
     output.close()

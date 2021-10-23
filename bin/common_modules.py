@@ -1,6 +1,8 @@
 import math
 import random
 
+
+
 def getFileFrequencies(filename,order):
     file = open(filename,"r")
     text= file.read()
@@ -24,16 +26,18 @@ def getFileFrequencies(filename,order):
             appearances[current_buffer]+=1
         else:
             appearances[current_buffer]=1
+    if current_buffer not in table.keys():
+        table[current_buffer] = {}
     return table,appearances,alphabet
 
 def calculateProbabilityMap(frequencies,alphabet,smoothing):
     result = {}
     smoothing_denominator = smoothing*len(alphabet)
 
-    for sequence in frequencies.keys():
-        total = sum(sequence.values())
+    for sequence,appearances in frequencies.items():
+        total = sum(appearances.values())
         denominator = total+smoothing_denominator
-        result[sequence] = { x: (sequence[x]+smoothing)/denominator for x in sequence.keys() }
+        result[sequence] = { x: (y+smoothing)/denominator for x,y in appearances.items() }
         result[sequence]['default']=smoothing/denominator
     return result
 
@@ -43,13 +47,13 @@ def calculateEntropy(probabilities,appearances):
     #individual formula: − log P(e|c)
     #row formula: sum of (individual * probability)
     #overall formula: sum (rowvalue * row probability)
-    rowvalues = {x: sum([-y[z]*math.log2(y[z]) for z in y.keys() if z!="default"]) for x,y in probabilities.entries() }
-    return sum([rowvalues*appearances[state]/statetotal for state in appearances])
+    rowvalues = {x: sum([-y[z]*math.log2(y[z]) for z in y.keys() if z!="default"]) for x,y in probabilities.items() }
+    return sum([rowvalues[state]*appearances[state]/statetotal for state in appearances])
 
 
 def generateText(probabilities,alphabet,length,start):
     #return length*chars 
-    order = len(probabilities.keys()[0])
+    order = len(list(probabilities.keys())[0])
     if len(start)<order:
         raise ValueError("Given start is too small to work with")
     
@@ -57,30 +61,29 @@ def generateText(probabilities,alphabet,length,start):
     alphabet_size = len(alphabet)
     current_buffer = start[-order:]
     generated_string = ""
+    #debugging: SO FAR SO GOOD
+    known_sequences = probabilities.keys()
     for x in range(length):
-        if current_buffer not in probabilities.keys():#if we haven't observed this any character is equally likely as a follow-up
+        if current_buffer not in known_sequences:#if we haven't observed this any character is equally likely as a follow-up
             char = alphabet_indexable[math.floor(random.random()*alphabet_size)]
         else:
             seen = probabilities[current_buffer].keys()
             value = random.random()
             cumulative_chance = 0
-
-            for key in seen: #first try with probabilities we already know
-                if key!="default":
-                    cumulative_chance+=probabilities[current_buffer][key]
+            for char in seen: #first try with probabilities we already know
+                if char!="default":
+                    cumulative_chance+=probabilities[current_buffer][char]
                     if cumulative_chance>=value:
-                        char = key
                         break
             if cumulative_chance<value: #try to get an unseen letter here
-                unseen = alphabet.difference(seen)
+                unseen = alphabet.difference(seen) #might include the word "default" 
                 default_add = probabilities[current_buffer]['default']
                 for char in unseen:
                     cumulative_chance+=default_add
                     if cumulative_chance>=value:
-                        char = key
                         break
-            if cumulative_chance>1:
-                raise ValueError("oh god why is cumulative probability larger than 1?")
+            if cumulative_chance>1: #TODO: sometimes this happens, I think it's a rounding error but someone should crunch the numbers
+                raise ValueError(f"oh god why is cumulative probability larger than 1? {cumulative_chance}")
         generated_string+=char
         current_buffer= current_buffer[1:]+char
     return generated_string
