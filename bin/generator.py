@@ -16,15 +16,14 @@ if __name__ == "__main__":
     table,appearances,alphabet = common_modules.getFileFrequencies(args.source,args.order)
     p_map = common_modules.calculateProbabilityMap(table,alphabet,args.order)
     
-    start_text = args.start
     if args.start =="":
         total_appearances = sum(appearances.values())
         cumulative_value = 0
         target = random.random()
-        for key,value in appearances.entries()
+        for key,value in appearances.items():
             cumulative_value+=value/total_appearances
             if cumulative_value>=target:
-                start_text=key
+                args.start=key
                 break
     
     text = args.start + common_modules.generateText(table,alphabet,args.length,start_text)
