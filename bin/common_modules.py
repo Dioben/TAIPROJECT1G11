@@ -59,7 +59,7 @@ def calculateEntropy(probabilities,appearances,alphabet_len):
         sum( probability_of_row_key_in_text * row_entropy )
     """
     statetotal = sum(appearances.values())
-    rowvalues = {x: sum([-y[z]*math.log2(y[z]) if z!="default" else (alphabet_len-len(y)+1) * (-y[z]*math.log2(y[z])) if y[z]>0 else 0 for z in y.keys()]) for x,y in probabilities.items()}
+    rowvalues = {x: sum([-y[z]*math.log2(y[z]) if z!="default" else (alphabet_len-len(y)+1) * (-y[z]*math.log2(y[z])) for z in y.keys()]) for x,y in probabilities.items()}
     return sum([rowvalues[state]*appearances[state]/statetotal for state in appearances])
 
 
