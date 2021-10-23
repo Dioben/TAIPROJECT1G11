@@ -22,15 +22,18 @@ def getFileFrequencies(filename,order):
         else:
             table[current_buffer][character]+=1
         current_buffer = current_buffer [1:]+character
+        #TODO: Should the last context (the one with nothing after) be added to the appearances ?
         if current_buffer in appearances.keys():
             appearances[current_buffer]+=1
         else:
             appearances[current_buffer]=1
+    #TODO: Should the last context (the one with nothing after) be added to the table ?
     if current_buffer not in table.keys():
         table[current_buffer] = {}
     return table,appearances,alphabet
 
 def calculateProbabilityMap(frequencies,alphabet,smoothing):
+    #TODO: Can smoothing be <= 0 ?
     if not smoothing>0:
         raise ValueError("Smoothing has to be bigger than 0")
     result = {}
