@@ -26,6 +26,8 @@ def getFileFrequencies(filename,order):
             appearances[current_buffer]+=1
         else:
             appearances[current_buffer]=1
+    if current_buffer not in table.keys():
+        table[current_buffer] = {}
     return table,appearances,alphabet
 
 def calculateProbabilityMap(frequencies,alphabet,smoothing):
