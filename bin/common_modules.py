@@ -1,6 +1,8 @@
 import math
 import random
 
+
+
 def getFileFrequencies(filename,order):
     file = open(filename,"r")
     text= file.read()
@@ -49,7 +51,7 @@ def calculateEntropy(probabilities,appearances):
 
 def generateText(probabilities,alphabet,length,start):
     #return length*chars 
-    order = len(probabilities.keys()[0])
+    order = len(list(probabilities.keys())[0])
     if len(start)<order:
         raise ValueError("Given start is too small to work with")
     
