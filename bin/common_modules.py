@@ -68,26 +68,21 @@ def generateText(probabilities,alphabet,length,start):
             seen = probabilities[current_buffer].keys()
             value = random.random()
             cumulative_chance = 0
-            for key in seen: #first try with probabilities we already know
-                if key!="default":
-                    cumulative_chance+=probabilities[current_buffer][key]
+            for char in seen: #first try with probabilities we already know
+                if char!="default":
+                    cumulative_chance+=probabilities[current_buffer][char]
                     if cumulative_chance>=value:
-                        char = key
                         break
-            print(cumulative_chance)
             if cumulative_chance<value: #try to get an unseen letter here
-                unseen = alphabet.difference(seen) #might include the word "default" TODO: CHECK
+                unseen = alphabet.difference(seen) #might include the word "default" 
                 default_add = probabilities[current_buffer]['default']
                 for char in unseen:
                     cumulative_chance+=default_add
                     if cumulative_chance>=value:
-                        char = key
                         break
-            if cumulative_chance>1:
-                raise ValueError("oh god why is cumulative probability larger than 1?")
+            if cumulative_chance>1: #TODO: sometimes this happens, I think it's a rounding error but someone should crunch the numbers
+                raise ValueError(f"oh god why is cumulative probability larger than 1? {cumulative_chance}")
         generated_string+=char
-        print("char is " + char)
         current_buffer= current_buffer[1:]+char
-        print(current_buffer)
     return generated_string
 
