@@ -59,8 +59,10 @@ def generateText(probabilities,alphabet,length,start):
     alphabet_size = len(alphabet)
     current_buffer = start[-order:]
     generated_string = ""
+    #debugging: SO FAR SO GOOD
+    known_sequences = probabilities.keys()
     for x in range(length):
-        if current_buffer not in probabilities.keys():#if we haven't observed this any character is equally likely as a follow-up
+        if current_buffer not in known_sequences:#if we haven't observed this any character is equally likely as a follow-up
             char = alphabet_indexable[math.floor(random.random()*alphabet_size)]
         else:
             seen = probabilities[current_buffer].keys()
@@ -72,8 +74,9 @@ def generateText(probabilities,alphabet,length,start):
                     if cumulative_chance>=value:
                         char = key
                         break
+            print(cumulative_chance)
             if cumulative_chance<value: #try to get an unseen letter here
-                unseen = alphabet.difference(seen)
+                unseen = alphabet.difference(seen) #might include the word "default" TODO: CHECK
                 default_add = probabilities[current_buffer]['default']
                 for char in unseen:
                     cumulative_chance+=default_add
@@ -83,6 +86,8 @@ def generateText(probabilities,alphabet,length,start):
             if cumulative_chance>1:
                 raise ValueError("oh god why is cumulative probability larger than 1?")
         generated_string+=char
+        print("char is " + char)
         current_buffer= current_buffer[1:]+char
+        print(current_buffer)
     return generated_string
 
