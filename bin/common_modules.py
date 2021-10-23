@@ -30,10 +30,10 @@ def calculateProbabilityMap(frequencies,alphabet,smoothing):
     result = {}
     smoothing_denominator = smoothing*len(alphabet)
 
-    for sequence in frequencies.keys():
-        total = sum(sequence.values())
+    for sequence,appearances in frequencies.items():
+        total = sum(appearances.values())
         denominator = total+smoothing_denominator
-        result[sequence] = { x: (sequence[x]+smoothing)/denominator for x in sequence.keys() }
+        result[sequence] = { x: (y+smoothing)/denominator for x,y in appearances.items() }
         result[sequence]['default']=smoothing/denominator
     return result
 
@@ -43,8 +43,8 @@ def calculateEntropy(probabilities,appearances):
     #individual formula: − log P(e|c)
     #row formula: sum of (individual * probability)
     #overall formula: sum (rowvalue * row probability)
-    rowvalues = {x: sum([-y[z]*math.log2(y[z]) for z in y.keys() if z!="default"]) for x,y in probabilities.entries() }
-    return sum([rowvalues*appearances[state]/statetotal for state in appearances])
+    rowvalues = {x: sum([-y[z]*math.log2(y[z]) for z in y.keys() if z!="default"]) for x,y in probabilities.items() }
+    return sum([rowvalues[state]*appearances[state]/statetotal for state in appearances])
 
 
 def generateText(probabilities,alphabet,length,start):
