@@ -66,7 +66,6 @@ def generateText(probabilities,alphabet,length,start):
             seen = probabilities[current_buffer].keys()
             value = random.random()
             cumulative_chance = 0
-
             for key in seen: #first try with probabilities we already know
                 if key!="default":
                     cumulative_chance+=probabilities[current_buffer][key]

@@ -20,7 +20,7 @@ if __name__ == "__main__":
         pass
         #TODO: CALCULATE START VALUE IF ==""
 
-    text = args.start + common_modules.generateText(table,alphabet,args.length,args.start)
+    text = args.start + common_modules.generateText(p_map,alphabet,args.length,args.start)
     output = open(args.output,"w")
     output.write(text)
     output.close()
