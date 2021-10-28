@@ -106,8 +106,8 @@ def generateText(probabilities,alphabet,length,start):
                     cumulative_chance+=default_add
                     if cumulative_chance>=value:
                         break
-            if cumulative_chance>1: #TODO: sometimes this happens, I think it's a rounding error but someone should crunch the numbers
-                raise ValueError(f"oh god why is cumulative probability larger than 1? {cumulative_chance}")
+            if cumulative_chance>1.0000001 or cumulative_chance<0.99999999: #There may be a rounding error
+                raise ValueError(f"significative rounding error in generation, sum of probabilities is {cumulative_chance}, should be 1.0")
         generated_string+=char
         current_buffer= current_buffer[1:]+char
     return generated_string
