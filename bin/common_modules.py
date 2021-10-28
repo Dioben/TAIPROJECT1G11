@@ -8,6 +8,9 @@ def getFileFrequencies(filename,order):
     text= file.read()
     file.close()
 
+    if len(text)<order:
+        raise ValueError("Text is smaller than order")
+
     alphabet = set(text)
     current_buffer = text[:order]
     text = text[order:]
