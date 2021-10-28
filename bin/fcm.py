@@ -15,7 +15,7 @@ if __name__ == "__main__":
         raise ValueError("Smoothing must be non-negative")
     table,appearances,alphabet = common_modules.getFileFrequencies(args.source,args.order)
 
-    p_map = common_modules.calculateProbabilityMap(table,alphabet,args.smoothing)
+    p_map = common_modules.calculateProbabilityMapSmoothingGT0(table,alphabet,args.smoothing)
 
     entropy = common_modules.calculateEntropy(p_map,appearances,len(alphabet))
     print(entropy)

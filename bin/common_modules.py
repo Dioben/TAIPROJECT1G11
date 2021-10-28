@@ -33,7 +33,19 @@ def getFileFrequencies(filename,order):
     return table,appearances,alphabet
 
 def calculateProbabilityMap(frequencies,alphabet,smoothing):
-    #TODO: Can smoothing be <= 0 ?
+    if not smoothing>=0:
+        raise ValueError("Smoothing has to be equal to or greater than 0")
+    result = {}
+    smoothing_denominator = smoothing*len(alphabet)
+
+    for sequence,appearances in frequencies.items():
+        total = sum(appearances.values())
+        denominator = total+smoothing_denominator
+        result[sequence] = { x: (y+smoothing)/denominator for x,y in appearances.items() }
+        result[sequence]['default']=smoothing/denominator
+    return result
+
+def calculateProbabilityMapSmoothingGT0(frequencies,alphabet,smoothing):
     if not smoothing>0:
         raise ValueError("Smoothing has to be bigger than 0")
     result = {}
