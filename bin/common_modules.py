@@ -9,11 +9,10 @@ def getFileFrequencies(filename,order):
     file.close()
 
     alphabet = set(text)
-                #if (len(alphabet)**(order+1))*64>8...   #assumes int size is 64, actually grows forever -> actually just always using hash table
     current_buffer = text[:order]
     text = text[order:]
     table = {}
-    appearances = {current_buffer:1}
+    appearances={}
     for character in text:
         if current_buffer not in table.keys(): #have we seen this predecessor yet?
             table[current_buffer]= {}
@@ -21,15 +20,13 @@ def getFileFrequencies(filename,order):
             table[current_buffer][character]=1
         else:
             table[current_buffer][character]+=1
-        current_buffer = current_buffer [1:]+character
-        #TODO: Should the last context (the one with nothing after) be added to the appearances ?
+        #REVISED: NO LONGER CONSIDERS LAST CHARACTER
         if current_buffer in appearances.keys():
             appearances[current_buffer]+=1
         else:
             appearances[current_buffer]=1
-    #TODO: Should the last context (the one with nothing after) be added to the table ?
-    if current_buffer not in table.keys():
-        table[current_buffer] = {}
+        current_buffer = current_buffer [1:]+character
+        
     return table,appearances,alphabet
 
 def calculateProbabilityMap(frequencies,alphabet,smoothing):
