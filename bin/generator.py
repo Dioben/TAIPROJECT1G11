@@ -13,6 +13,12 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    if args.order<1:
+        raise ValueError("Order must be at least 1")
+    if args.smoothing<0:
+        raise ValueError("Smoothing must be non-negative")
+
+
     table,appearances,alphabet = common_modules.getFileFrequencies(args.source,args.order)
     p_map = common_modules.calculateProbabilityMap(table,alphabet,args.smoothing)
     
