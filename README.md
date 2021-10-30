@@ -20,12 +20,12 @@ The options for these scripts are as follows:
 ### fcm.py
 - --order: Sets the order of the model, the default value is **2**
 - --smoothing: Sets the smoothing value, the default value is **1**
-- --source: The name of the file that will be read to generate the model, the default value is **example.txt**, and is sensitive to the current folder context
+- --source: The name of the file that will be read to generate the model, the default value is **../example/example.txt**, and is sensitive to the current folder context
 
 ### generator.py
 - --order: Sets the order of the model, the default value is **2**
 - --smoothing: Sets the smoothing value, the default value is **0.00001**
-- --source: The name of the file that will be read to generate the model, the default value is **example.txt**, and is sensitive to the current folder context
+- --source: The name of the file that will be read to generate the model, the default value is **../example/example.txt**, and is sensitive to the current folder context
 - --output: The name of  the file that will be used to output the generated text, the default value is **output.txt**, and is sensitive to the current folder context
 - --length: The length of the text to be generated, the default value is **1000**
 - --start: The starting sentence so the program knows which context to use first, if no value is provided one is randomly selected from the provided text, with weights decided by how frequently a string occurs in the text
