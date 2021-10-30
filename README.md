@@ -30,7 +30,7 @@ The options for these scripts are as follows:
 - --length: The length of the text to be generated, the default value is **1000**
 - --start: The starting sentence so the program knows which context to use first, if no value is provided one is randomly selected from the provided text, with weights decided by how frequently a string occurs in the text
 
-###Running with options - examples
+### Running with options - examples
 ```bash
 python3 fcm.py --order 10 --smoothing 0.05 --source ../example/english.txt
 python3 generator.py --order 10 --smoothing 0.05 --source ../example/english.txt --output "more_bee_movie.txt" --length 10000 --start "Ya like jazz?"
