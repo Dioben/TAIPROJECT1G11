@@ -87,7 +87,7 @@ def generateText(probabilities,alphabet,length,start):
     generated_string = ""
     #debugging: SO FAR SO GOOD
     known_sequences = probabilities.keys()
-    for x in range(length):
+    while len(generated_string)<length:
         if current_buffer not in known_sequences:#if we haven't observed this any character is equally likely as a follow-up
             char = alphabet_indexable[math.floor(random.random()*alphabet_size)]
         else:
@@ -106,8 +106,8 @@ def generateText(probabilities,alphabet,length,start):
                     cumulative_chance+=default_add
                     if cumulative_chance>=value:
                         break
-            if cumulative_chance>1.0000001 or cumulative_chance<0.99999999: #There may be a rounding error
-                raise ValueError(f"significative rounding error in generation, sum of probabilities is {cumulative_chance}, should be 1.0")
+                if cumulative_chance>1.0000001 or cumulative_chance<0.99999999: #There may be a rounding error
+                    continue #significant rounding error, we will reroll
         generated_string+=char
         current_buffer= current_buffer[1:]+char
     return generated_string
